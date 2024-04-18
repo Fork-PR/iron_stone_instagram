@@ -146,9 +146,7 @@ def edit_comment(request, article_pk, comment_pk):
 def like_article(request, article_pk):
     if not request.user.is_authenticated:
         return Response({"message": "로그인 해주세요."}, status=status.HTTP_401_UNAUTHORIZED)
-    
     article = get_object_or_404(Article, pk=article_pk)
-    
     if article.like_user.filter(pk=request.user.pk).exists():
         # 이미 좋아요를 한 경우, 좋아요 취소
         article.like_user.remove(request.user)
