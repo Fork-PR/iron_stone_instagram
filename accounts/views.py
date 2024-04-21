@@ -1,13 +1,14 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from .models import User
 from .serializers import UserSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.settings import api_settings
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.permissions import IsAuthenticated
 
 
 
@@ -62,6 +63,7 @@ def update_user_profile(request, user_pk):
 
 #사용자 팔로우
 def follow_user(request, tar_user_pk):
+    print(tar_user_pk)
     target_user = get_object_or_404(User, pk=tar_user_pk)
     if request.user.is_authenticated:
         if request.user.followings.filter(pk=tar_user_pk).exists():
@@ -74,3 +76,11 @@ def follow_user(request, tar_user_pk):
             return Response({"message": "팔로우 성공"}, status=status.HTTP_200_OK)
     else:
         return Response({"message": "로그인 해주세요."}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_login(request):
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
