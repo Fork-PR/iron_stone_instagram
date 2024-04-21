@@ -15,8 +15,10 @@ matplotlib-inline==0.1.6
 parso==0.8.3
 pillow==10.3.0
 prompt-toolkit==3.0.43
+psycopg2-binary==2.9.9
 pure-eval==0.2.2
 Pygments==2.17.2
+python-dotenv==1.0.1
 pytz==2023.3.post1
 serializers==0.2.4
 six==1.16.0
