@@ -63,6 +63,7 @@ def update_user_profile(request, user_pk):
 
 #사용자 팔로우
 def follow_user(request, tar_user_pk):
+    print(tar_user_pk)
     target_user = get_object_or_404(User, pk=tar_user_pk)
     if request.user.is_authenticated:
         if request.user.followings.filter(pk=tar_user_pk).exists():

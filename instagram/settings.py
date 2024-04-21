@@ -143,3 +143,5 @@ REST_FRAMEWORK = {
 # ,'http://localhost:3000','원하는 포트번호']#(포트 지정)
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ORIGIN_WHITELIST =['http://127.0.0.1:5173']
