@@ -39,8 +39,6 @@ def user_profile(request, tar_user_pk):
     # 사용자의 게시글들 조회
     articles = Article.objects.filter(author=user)
     serializer = Article_like_comment_Serializer(articles, many=True, context={'request': request})
-
-
     profile_data = {
         'pk': user.pk,
         'username': user.username,
@@ -62,6 +60,7 @@ def user_profile(request, tar_user_pk):
 def get_followers_list(request, user_pk):
     user = get_object_or_404(User, pk=user_pk)
     followers = user.followers.all()
+    print(followers)
     followers_list = []
     for follow in followers:
         followers_list.append({'id': follow.id, 'username': follow.username} )
@@ -71,7 +70,7 @@ def get_followers_list(request, user_pk):
 @api_view(['GET'])
 def get_following_list(request, user_pk):
     user = get_object_or_404(User, pk=user_pk)
-    following = user.following.all()
+    following = user.followings.all()
     following_list = []
     for follow in following:
         following_list.append({'id': follow.id, 'username': follow.username} )
@@ -146,9 +145,7 @@ def edit_comment(request, article_pk, comment_pk):
 def like_article(request, article_pk):
     if not request.user.is_authenticated:
         return Response({"message": "로그인 해주세요."}, status=status.HTTP_401_UNAUTHORIZED)
-    
     article = get_object_or_404(Article, pk=article_pk)
-    
     if article.like_user.filter(pk=request.user.pk).exists():
         # 이미 좋아요를 한 경우, 좋아요 취소
         article.like_user.remove(request.user)
