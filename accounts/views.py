@@ -62,6 +62,7 @@ def update_user_profile(request, user_pk):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #사용자 팔로우
+@api_view(['POST'])
 def follow_user(request, tar_user_pk):
     print(tar_user_pk)
     target_user = get_object_or_404(User, pk=tar_user_pk)
