@@ -91,3 +91,11 @@ def check_login(request):
         user = request.user
         serializer = UserSerializer(user)
         return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_info(request):
+    user = request.user
+    user_json = UserSerializer(user).data
+
+    return Response({"user": user_json,})

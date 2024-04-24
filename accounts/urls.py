@@ -27,4 +27,5 @@ urlpatterns = [
     path('<int:tar_user_pk>/follow/', views.follow_user, name='follow_user'),
     path('api/token/', obtain_auth_token, name='token_obtain_pair'),
     path('check_login', views.check_login, name='check_login'),
+    path('user_info/', views.user_info, name='user_info'),
 ]
