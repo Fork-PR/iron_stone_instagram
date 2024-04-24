@@ -62,8 +62,15 @@ def update_user_profile(request, user_pk):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #사용자 팔로우
+@api_view(['POST'])
 def follow_user(request, tar_user_pk):
-    print(tar_user_pk)
+    try:
+        token_key = request.auth
+        token = Token.objects.get(key=token_key)
+        # user = token.user
+    except Token.DoesNotExist:
+        return Response({'error': '토큰이 올바르지 않습니다.'}, status=status.HTTP_401_UNAUTHORIZED)
+
     target_user = get_object_or_404(User, pk=tar_user_pk)
     if request.user.is_authenticated:
         if request.user.followings.filter(pk=tar_user_pk).exists():
@@ -84,3 +91,11 @@ def check_login(request):
         user = request.user
         serializer = UserSerializer(user)
         return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_info(request):
+    user = request.user
+    user_json = UserSerializer(user).data
+
+    return Response({"user": user_json,})
